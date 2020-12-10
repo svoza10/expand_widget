@@ -213,6 +213,7 @@ class _ExpandTextState extends State<ExpandText>
                   curve: Curves.easeInOutCubic,
                   child: ConstrainedBox(
                     constraints: BoxConstraints(),
+                    child: child,
                   ),
                 ),
                 ClipRect(
