@@ -141,7 +141,7 @@ class _ExpandTextState extends State<ExpandText>
     // Initializing the animation controller with the [duration] parameter
     _controller = AnimationController(
       duration: widget.animationDuration,
-      value: this,
+      vsync: this,
     );
 
     // Initializing the animation, depending on the [_easeInCurve] curve
