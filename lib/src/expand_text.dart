@@ -72,9 +72,18 @@ class ExpandText extends StatefulWidget {
   /// Ability to hide arrow from display when content is expanded.
   final bool hideArrowOnExpanded;
 
+  final String textNextIconExpanded;
+
+  final String textNextIcon;
+
+  final TextStyle textNextIconStyle;
+
   const ExpandText(
     this.data, {
     Key key,
+    this.textNextIconExpanded,
+    this.textNextIcon,
+    this.textNextIconStyle,
     this.collapsedHint,
     this.expandedHint,
     this.arrowPadding,
@@ -132,7 +141,7 @@ class _ExpandTextState extends State<ExpandText>
     // Initializing the animation controller with the [duration] parameter
     _controller = AnimationController(
       duration: widget.animationDuration,
-      vsync: this,
+      value: this,
     );
 
     // Initializing the animation, depending on the [_easeInCurve] curve
@@ -204,12 +213,6 @@ class _ExpandTextState extends State<ExpandText>
                   curve: Curves.easeInOutCubic,
                   child: ConstrainedBox(
                     constraints: BoxConstraints(),
-                    child: GestureDetector(
-                      child: child,
-                      onTap: widget.expandOnGesture ? _handleTap : null,
-                      onVerticalDragEnd:
-                          widget.expandOnGesture ? _handleTap : null,
-                    ),
                   ),
                 ),
                 ClipRect(
@@ -218,20 +221,45 @@ class _ExpandTextState extends State<ExpandText>
                     heightFactor: widget.hideArrowOnExpanded
                         ? 1 - _heightFactor.value
                         : 1,
-                    child: InkWell(
-                      onTap: _handleTap,
-                      child: ExpandArrow(
-                        collapsedHint: widget.collapsedHint,
-                        expandedHint: widget.expandedHint,
-                        animation: _iconTurns,
-                        padding: widget.arrowPadding,
+                    child: Material(
+                      color: Color(0x00000000),
+                      shadowColor: Color(0x00000000),
+                      clipBehavior: Clip.antiAlias,
+                      child: InkWell(
                         onTap: _handleTap,
-                        arrowColor: widget.arrowColor,
-                        arrowSize: widget.arrowSize,
-                        icon: widget.icon,
-                        hintTextStyle: widget.hintTextStyle,
-                        expandArrowStyle: widget.expandArrowStyle,
-                        capitalArrowtext: widget.capitalArrowtext,
+                        splashColor: Color(0xFFADB6CB).withOpacity(0.5),
+                        highlightColor: Color(0x00000000),
+                        child: Container(
+                          height: 20,
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Text(
+                                _isExpanded
+                                    ? widget.textNextIconExpanded
+                                    : widget.textNextIcon,
+                                style: widget.textNextIconStyle,
+                                textAlign: TextAlign.left,
+                              ),
+                              SizedBox(
+                                width: 15,
+                              ),
+                              ExpandArrow(
+                                collapsedHint: widget.collapsedHint,
+                                expandedHint: widget.expandedHint,
+                                animation: _iconTurns,
+                                padding: widget.arrowPadding,
+                                //onTap: _handleTap,
+                                arrowColor: widget.arrowColor,
+                                arrowSize: widget.arrowSize,
+                                icon: widget.icon,
+                                hintTextStyle: widget.hintTextStyle,
+                                expandArrowStyle: widget.expandArrowStyle,
+                                capitalArrowtext: widget.capitalArrowtext,
+                              ),
+                            ],
+                          ),
+                        ),
                       ),
                     ),
                   ),
